@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gay Games XII Valencia 2026 — Schedule Explorer</title>
+<style>
+  :root{
+    --bg:#f6f7fb; --card:#fff; --ink:#1c2030; --muted:#6b7184; --line:#e6e8f0;
+    --sport:#2563eb; --sportbg:#e8f0fe;
+    --cult:#7c3aed; --cultbg:#f1e9fe;
+    --cer:#b45309; --cerbg:#fcf0dc;
+    --party:#db2777; --partybg:#fce7f1;
+    --accent:#e11d48;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased}
+  header{background:linear-gradient(100deg,#e11d48,#db2777 35%,#7c3aed 70%,#2563eb);color:#fff;padding:22px 20px 18px}
+  header h1{margin:0 0 4px;font-size:21px;letter-spacing:.2px}
+  header p{margin:0;opacity:.92;font-size:13px}
+  .wrap{max-width:980px;margin:0 auto;padding:0 16px 60px}
+  .controls{position:sticky;top:0;z-index:20;background:var(--bg);padding:14px 0 8px;border-bottom:1px solid var(--line)}
+  .search{width:100%;padding:11px 14px;border:1px solid var(--line);border-radius:10px;font-size:15px;background:#fff}
+  .search:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(225,29,72,.12)}
+  .row{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px;align-items:center}
+  .lbl{font-size:11px;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);margin-right:2px;font-weight:600}
+  .chip{border:1px solid var(--line);background:#fff;color:var(--ink);padding:6px 11px;border-radius:999px;font-size:13px;cursor:pointer;user-select:none;transition:.12s}
+  .chip:hover{border-color:#c8ccda}
+  .chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+  .chip.cat-Sport.on{background:var(--sport);border-color:var(--sport)}
+  .chip.cat-Cultural.on{background:var(--cult);border-color:var(--cult)}
+  .chip.cat-Ceremony.on{background:var(--cer);border-color:var(--cer)}
+  .chip.cat-Party.on{background:var(--party);border-color:var(--party)}
+  .toggle{display:flex;gap:0;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff}
+  .toggle button{border:0;background:#fff;padding:8px 16px;font-size:13px;cursor:pointer;color:var(--muted);font-weight:600}
+  .toggle button.on{background:var(--ink);color:#fff}
+  .count{font-size:12px;color:var(--muted);margin:14px 2px 4px}
+  .day{margin-top:18px}
+  .day h2{font-size:15px;margin:0 0 2px;display:flex;align-items:baseline;gap:9px;position:sticky;top:128px;background:var(--bg);padding:6px 0;z-index:5}
+  .day h2 .dow{color:var(--accent);font-weight:700}
+  .day h2 .n{font-size:11px;color:var(--muted);font-weight:500}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:11px 13px;margin-top:8px;display:grid;grid-template-columns:74px 1fr;gap:12px;align-items:start}
+  .time{font-variant-numeric:tabular-nums;font-weight:700;font-size:14px;color:var(--ink);padding-top:1px}
+  .time small{display:block;font-weight:500;color:var(--muted);font-size:11px}
+  .body .name{font-weight:600;font-size:15px;line-height:1.25}
+  .body .name a{color:inherit;text-decoration:none;border-bottom:1px solid transparent}
+  .body .name a:hover{border-bottom-color:var(--muted)}
+  .meta{font-size:12.5px;color:var(--muted);margin-top:3px;line-height:1.45}
+  .venue{color:var(--ink)}
+  .badge{display:inline-block;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;padding:2px 7px;border-radius:6px;margin-left:7px;vertical-align:1px}
+  .b-Sport{background:var(--sportbg);color:var(--sport)}
+  .b-Cultural{background:var(--cultbg);color:var(--cult)}
+  .b-Ceremony{background:var(--cerbg);color:var(--cer)}
+  .b-Party{background:var(--partybg);color:var(--party)}
+  .empty{text-align:center;color:var(--muted);padding:40px 0;font-size:14px}
+  .note{font-size:11.5px;color:var(--muted);margin-top:22px;border-top:1px solid var(--line);padding-top:12px;line-height:1.5}
+  /* sport view */
+  .sportcard .name{font-size:15px;font-weight:600}
+  .sportcard ul{margin:7px 0 0;padding:0;list-style:none}
+  .sportcard li{font-size:13px;color:var(--ink);padding:2px 0;display:grid;grid-template-columns:96px 1fr;gap:8px}
+  .sportcard li .d{color:var(--accent);font-weight:600;font-variant-numeric:tabular-nums}
+  @media(max-width:560px){
+    .card{grid-template-columns:60px 1fr;gap:9px}
+    .day h2{top:150px}
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>Gay Games XII Valencia 2026 — Schedule Explorer</h1>
+  <p>27 June – 4 July 2026 · 44 sports + cultural events, ceremonies &amp; parties · tap to filter</p>
+</header>
+<div class="wrap">
+  <div class="controls">
+    <input id="q" class="search" type="search" placeholder="Search activity or venue…  (e.g. swimming, beach, Lluis Puig)">
+    <div class="row" id="cats">
+      <span class="lbl">Type</span>
+      <span class="chip cat-Sport on" data-cat="Sport">Sport</span>
+      <span class="chip cat-Cultural on" data-cat="Cultural">Cultural</span>
+      <span class="chip cat-Ceremony on" data-cat="Ceremony">Ceremony</span>
+      <span class="chip cat-Party on" data-cat="Party">Party</span>
+    </div>
+    <div class="row" style="justify-content:space-between">
+      <div class="toggle" id="view">
+        <button data-v="day" class="on">📅 By day</button>
+        <button data-v="sport">🏅 By activity</button>
+      </div>
+      <div class="count" id="count"></div>
+    </div>
+  </div>
+  <div id="out"></div>
+  <div class="note">
+    Times reflect what the official site has published; many sports list start times, others only mark which days they run (shown as “time TBC”). The organisers note the calendar is <em>subject to minor changes</em>. Multi-day exhibitions appear under “Ongoing,” and activities with no published day/time appear under “To be confirmed.” Each activity links to its source page. Generated from gaygamesvalencia2026.com.
+  </div>
+</div>
+<script>
+const DAYS=[
+ ["Fri 26 Jun","Fri"],["Sat 27 Jun","Sat"],["Sun 28 Jun","Sun"],["Mon 29 Jun","Mon"],
+ ["Tue 30 Jun","Tue"],["Wed 1 Jul","Wed"],["Thu 2 Jul","Thu"],["Fri 3 Jul","Fri"],
+ ["Sat 4 Jul","Sat"],["Ongoing",""],["To be confirmed",""]
+];
+// d=day index, t=sort key, tm=time label, a=activity, c=category, v=venue, n=detail, u=url
+const R=[
+ // FRI 26 JUN
+ [0,"1600","16:00","Triathlon","Sport","La Malvarrosa Beach","Race-pack collection & EXPO; 19:00 technical briefing","https://www.gaygamesvalencia2026.com/en/sport/triathlon/"],
+ [0,"9999","Rehearsal","Gay Games Valencia Band Festival","Cultural","Palau de la Música","Band rehearsal","https://www.gaygamesvalencia2026.com/en/culture/gay-games-valencia-band-festival/"],
+ // SAT 27 JUN
+ [1,"0835","08:35","Triathlon","Sport","La Malvarrosa Beach","Sprint race start (check-in 7:00–7:45); awards 11:30","https://www.gaygamesvalencia2026.com/en/sport/triathlon/"],
+ [1,"0930","09:30","International Rainbow Memorial Run","Cultural","Exposición Bridge (Alameda)","Race start; registration & warm-up from 8:30","https://www.gaygamesvalencia2026.com/en/culture/the-international-rainbow-memorial-run/"],
+ [1,"0900","09:00","Wrestling","Sport","Lluis Puig Velodrome","Registration 9–19; open mat 14–16","https://www.gaygamesvalencia2026.com/en/sport/wrestling/"],
+ [1,"9999","Captain's mtg","Aquatics: Diving","Sport","La Hípica Swimming Pool","Captain's meeting","https://www.gaygamesvalencia2026.com/en/sport/diving/"],
+ [1,"9999","Captain's mtg","Aquatics: Open Water Swimming","Sport","Las Arenas Beach","Captain's meeting","https://www.gaygamesvalencia2026.com/en/sport/open-water-swimming/"],
+ [1,"9999","Concert","Gay Games Valencia Band Festival","Cultural","Estadi Ciutat de València","Rehearsal + concert at Opening Ceremony","https://www.gaygamesvalencia2026.com/en/culture/gay-games-valencia-band-festival/"],
+ [1,"9999","Performance","Cheerleading","Cultural","Estadi Ciutat de València","Opening Ceremonies performance","https://www.gaygamesvalencia2026.com/en/culture/cheerleading-event/"],
+ [1,"1930","19:30","Opening Ceremony & Welcome Party","Ceremony","Estadi Ciutat de València","Opening Ceremony & Welcome Party","https://www.gaygamesvalencia2026.com/en/opening-ceremony/"],
+ // SUN 28 JUN
+ [2,"0730","07:30","Aquatics: Swimming","Sport","Parque del Oeste Swimming Pool","Competition (warm-up 7:00)","https://www.gaygamesvalencia2026.com/en/sport/swimming/"],
+ [2,"0830","08:30","Aquatics: Waterpolo","Sport","Nou Moles / Natzaret","Group stage (8:30–20:30)","https://www.gaygamesvalencia2026.com/en/sport/waterpolo/"],
+ [2,"0830","08:30","Triathlon","Sport","La Malvarrosa Beach","Olympic race start (check-in 7:00–7:45); awards 12:30","https://www.gaygamesvalencia2026.com/en/sport/triathlon/"],
+ [2,"0930","09:30","Grappling","Sport","Lluis Puig Velodrome","Doors 9:30; weigh-ins & clinics; pool party/BBQ 15–21","https://www.gaygamesvalencia2026.com/en/sport/grappling/"],
+ [2,"1300","13:00","Wrestling","Sport","Lluis Puig Velodrome","Clinic; weigh-ins 13:30–17; open mat","https://www.gaygamesvalencia2026.com/en/sport/wrestling/"],
+ [2,"9999","Groups","Table Tennis","Sport","Lluis Puig Velodrome","Singles (18–39) groups","https://www.gaygamesvalencia2026.com/en/sport/table-tennis/"],
+ [2,"1800","18:00","Out Loud: Pride Talks","Cultural","The Meeting Point","FLINTA* Spaces Matter","https://www.gaygamesvalencia2026.com/en/culture/out-loud/"],
+ [2,"1900","19:00","Pride in Motion · Queer Film Festival","Cultural","Nave 3 Ribes, Parque Central","Opening night (7–9pm)","https://www.gaygamesvalencia2026.com/en/culture/pride-in-motion-queer-film-festival/"],
+ // MON 29 JUN
+ [3,"0730","07:30","Athletics: 10K","Sport","9 de Octubre Bridge","Race start","https://www.gaygamesvalencia2026.com/en/sport/10k/"],
+ [3,"0730","07:30","Aquatics: Swimming","Sport","Parque del Oeste Swimming Pool","Competition (sessions 7:30 & 11:00)","https://www.gaygamesvalencia2026.com/en/sport/swimming/"],
+ [3,"0830","08:30","Aquatics: Waterpolo","Sport","Nou Moles / Natzaret","Group stage","https://www.gaygamesvalencia2026.com/en/sport/waterpolo/"],
+ [3,"0800","08:00","Grappling","Sport","Lluis Puig Velodrome","Wrestling tournament (9–17)","https://www.gaygamesvalencia2026.com/en/sport/grappling/"],
+ [3,"0800","08:00","Wrestling","Sport","Lluis Puig Velodrome","Freestyle tournament; finals 14–16, medals 17","https://www.gaygamesvalencia2026.com/en/sport/wrestling/"],
+ [3,"0900","09:00","Artistic Gymnastics","Sport","Sports Center Cabanyal","All-Around + Qualifications (warm-up 9:00)","https://www.gaygamesvalencia2026.com/en/sport/artistic-gymnastics/"],
+ [3,"0900","09:00","Bowling","Sport","Ilusiona Heron City","Singles (squads 9–12 & 13–16)","https://www.gaygamesvalencia2026.com/en/sport/bowling/"],
+ [3,"0900","09:00","Petanque","Sport","Cruyff court Carlos Soler park","Daily play 9–14","https://www.gaygamesvalencia2026.com/en/sport/petanque/"],
+ [3,"0900","09:00","Squash","Sport","Sports Center Cabanyal","Daily play 9–18","https://www.gaygamesvalencia2026.com/en/sport/squash/"],
+ [3,"1000","10:00","Athletics: Track and Field","Sport","Turia Stadium","Decathlon, prelims & finals (10–17)","https://www.gaygamesvalencia2026.com/en/sport/track-field/"],
+ [3,"1100","11:00","Sailing","Sport","La Marina de Valencia","Registration, practice & sailors' meeting (11–17)","https://www.gaygamesvalencia2026.com/en/sport/sailing/"],
+ [3,"1600","16:00","Figure Skating (on ice)","Sport","Fun on Ice Bonaire","Practice (16–22)","https://www.gaygamesvalencia2026.com/en/sport/figure-skating/"],
+ [3,"1000","10:00","Badminton","Sport","la Petxina / Fontsanta","Individual group stage — courts 10:00–17:30 (Fuensanta & La Petxina; per-category times on page)","https://www.gaygamesvalencia2026.com/en/sport/badminton/"],
+ [3,"9999","Matches","Football (7 & 11)","Sport","Multiple fields","Match day","https://www.gaygamesvalencia2026.com/en/sport/football/"],
+ [3,"9999","Orientation","Martial Arts","Sport","Lluis Puig Velodrome","Orientation & certification","https://www.gaygamesvalencia2026.com/en/sport/martial-arts/"],
+ [3,"0800","08:00","Padel","Sport","Sport City Valencia","Group stage (play 08:00–15:00)","https://www.gaygamesvalencia2026.com/en/sport/padel/"],
+ [3,"9999","Draw","Table Tennis","Sport","Lluis Puig Velodrome","Singles & doubles (18–39) draw","https://www.gaygamesvalencia2026.com/en/sport/table-tennis/"],
+ [3,"1800","18:00","Out Loud: Pride Talks","Cultural","The Meeting Point","València sin discriminaciones (18h) & From Resistance to Legacy (19h)","https://www.gaygamesvalencia2026.com/en/culture/out-loud/"],
+ [3,"9999","Pop-up","Gay Games Valencia Band Festival","Cultural","Around the city","Pop-up pep-band concert","https://www.gaygamesvalencia2026.com/en/culture/gay-games-valencia-band-festival/"],
+ // TUE 30 JUN
+ [4,"0730","07:30","Aquatics: Swimming","Sport","Parque del Oeste Swimming Pool","Competition (7:30, 11:00 & 18:30)","https://www.gaygamesvalencia2026.com/en/sport/swimming/"],
+ [4,"0830","08:30","Aquatics: Waterpolo","Sport","Nou Moles / Natzaret","Group stage","https://www.gaygamesvalencia2026.com/en/sport/waterpolo/"],
+ [4,"0800","08:00","Grappling","Sport","Lluis Puig Velodrome","Grappling tournament (9–17)","https://www.gaygamesvalencia2026.com/en/sport/grappling/"],
+ [4,"0900","09:00","Athletics: Track and Field","Sport","Turia Stadium","Track & field (9–17:15)","https://www.gaygamesvalencia2026.com/en/sport/track-field/"],
+ [4,"0900","09:00","Artistic Gymnastics","Sport","Sports Center Cabanyal","Apparatus finals","https://www.gaygamesvalencia2026.com/en/sport/artistic-gymnastics/"],
+ [4,"0900","09:00","Bowling","Sport","Ilusiona Heron City","Doubles","https://www.gaygamesvalencia2026.com/en/sport/bowling/"],
+ [4,"0900","09:00","Petanque","Sport","Cruyff court Carlos Soler park","Daily play 9–14","https://www.gaygamesvalencia2026.com/en/sport/petanque/"],
+ [4,"0900","09:00","Squash","Sport","Sports Center Cabanyal","Daily play 9–18","https://www.gaygamesvalencia2026.com/en/sport/squash/"],
+ [4,"1000","~10:00","Cheer","Sport","L'Alqueria del Basket","Pre-day practice & blocking","https://www.gaygamesvalencia2026.com/en/sport/cheer/"],
+ [4,"1100","11:00","Sailing","Sport","La Marina de Valencia","Qualifying Series","https://www.gaygamesvalencia2026.com/en/sport/sailing/"],
+ [4,"1600","16:00","Figure Skating (on ice)","Sport","Fun on Ice Bonaire","Practice (16–22)","https://www.gaygamesvalencia2026.com/en/sport/figure-skating/"],
+ [4,"1700","17:00","Field Hockey","Sport","La Carrasca","Meet & Greet (social)","https://www.gaygamesvalencia2026.com/en/sport/field-hockey/"],
+ [4,"9999","Day 1","Dance Sport","Sport","Sports Center Fuente de San Luis","Competition Day 1","https://www.gaygamesvalencia2026.com/en/sport/dance-sport/"],
+ [4,"9999","Rapid","Chess","Sport","Sports Center la Petxina","Rapid Chess — playing window listed 5:30am–8:30pm on page","https://www.gaygamesvalencia2026.com/en/sport/chess/"],
+ [4,"1000","10:00","Badminton","Sport","la Petxina / Fontsanta","Doubles group stage — courts 10:00–17:30 (per-category times on page)","https://www.gaygamesvalencia2026.com/en/sport/badminton/"],
+ [4,"1600","16:00","Dragonboat","Sport","La Marina de Valencia","Training 16:00–20:00 (reservation required)","https://www.gaygamesvalencia2026.com/en/sport/dragonboat/"],
+ [4,"9999","Day 1","Martial Arts","Sport","Lluis Puig Velodrome","Tournament Day 1 (forms)","https://www.gaygamesvalencia2026.com/en/sport/martial-arts/"],
+ [4,"0800","08:00","Padel","Sport","Sport City Valencia","Round of 256 & 128 (08:00–15:00)","https://www.gaygamesvalencia2026.com/en/sport/padel/"],
+ [4,"9999","Groups","Table Tennis","Sport","Lluis Puig Velodrome","Singles (40+) groups","https://www.gaygamesvalencia2026.com/en/sport/table-tennis/"],
+ [4,"9999","Optional","Wrestling","Sport","Lluis Puig Velodrome","Optional No-gi grappling","https://www.gaygamesvalencia2026.com/en/sport/wrestling/"],
+ [4,"1800","18:00","Out Loud: Pride Talks","Cultural","The Meeting Point","Diputació de València (18h) & LGTBIQ+ Elite Athletes (18:30)","https://www.gaygamesvalencia2026.com/en/culture/out-loud/"],
+ [4,"1900","19:00","Pride in Motion · Queer Film Festival","Cultural","Valencia City Museum","Screening (7–8pm)","https://www.gaygamesvalencia2026.com/en/culture/pride-in-motion-queer-film-festival/"],
+ [4,"9999","Pop-up","Gay Games Valencia Band Festival","Cultural","Around the city","Pop-up pep-band concert","https://www.gaygamesvalencia2026.com/en/culture/gay-games-valencia-band-festival/"],
+ // WED 1 JUL
+ [5,"0730","07:30","Aquatics: Swimming","Sport","Parque del Oeste Swimming Pool","Competition (7:30, 11:00 & 18:30)","https://www.gaygamesvalencia2026.com/en/sport/swimming/"],
+ [5,"0830","08:30","Aquatics: Waterpolo","Sport","Nou Moles / Natzaret","Quarterfinals","https://www.gaygamesvalencia2026.com/en/sport/waterpolo/"],
+ [5,"0900","09:00","Athletics: Track and Field","Sport","Turia Stadium","Track & field (9–16:15)","https://www.gaygamesvalencia2026.com/en/sport/track-field/"],
+ [5,"0900","09:00","Beach Volleyball","Sport","El Cabanyal Beach","Group stage (9–15)","https://www.gaygamesvalencia2026.com/en/sport/beach-volleyball/"],
+ [5,"0900","09:00","Bowling","Sport","Ilusiona Heron City","Singles & Doubles medal rounds + ceremonies","https://www.gaygamesvalencia2026.com/en/sport/bowling/"],
+ [5,"0900","09:00","Field Hockey","Sport","La Carrasca / Naranjos","Matches (9–20)","https://www.gaygamesvalencia2026.com/en/sport/field-hockey/"],
+ [5,"0900","09:00","Grappling","Sport","La Malvarrosa Beach","Beach wrestling 9–11; social 18:30 (BuBu Bar)","https://www.gaygamesvalencia2026.com/en/sport/grappling/"],
+ [5,"0900","09:00","Petanque","Sport","Cruyff court Carlos Soler park","Daily play 9–14","https://www.gaygamesvalencia2026.com/en/sport/petanque/"],
+ [5,"0900","09:00","Squash","Sport","Sports Center Cabanyal","Daily play 9–18","https://www.gaygamesvalencia2026.com/en/sport/squash/"],
+ [5,"1100","11:00","Sailing","Sport","La Marina de Valencia","Qualifying Series","https://www.gaygamesvalencia2026.com/en/sport/sailing/"],
+ [5,"1600","16:00","Figure Skating (on ice)","Sport","Fun on Ice Bonaire","Competition (16–22)","https://www.gaygamesvalencia2026.com/en/sport/figure-skating/"],
+ [5,"1000","10:00","Badminton","Sport","la Petxina / Fontsanta","Mixed doubles group stage — courts 10:00–17:30 (per-category times on page)","https://www.gaygamesvalencia2026.com/en/sport/badminton/"],
+ [5,"9999","Rapid","Chess","Sport","Sports Center la Petxina","Rapid Chess — playing window listed 5:30am–8:30pm on page","https://www.gaygamesvalencia2026.com/en/sport/chess/"],
+ [5,"9999","Day 2","Dance Sport","Sport","Sports Center Fuente de San Luis","Competition Day 2","https://www.gaygamesvalencia2026.com/en/sport/dance-sport/"],
+ [5,"0900","09:00","Dragonboat","Sport","La Marina de Valencia","09:00 team managers' meeting; 09:30–13:00 preliminary rounds & semi-finals","https://www.gaygamesvalencia2026.com/en/sport/dragonboat/"],
+ [5,"9999","Practice","Golf","Sport","Golf Course El Saler","Official practice round","https://www.gaygamesvalencia2026.com/en/sport/golf/"],
+ [5,"9999","Day 2","Martial Arts","Sport","Lluis Puig Velodrome","Tournament Day 2 (self-defense, sparring)","https://www.gaygamesvalencia2026.com/en/sport/martial-arts/"],
+ [5,"0800","08:00","Padel","Sport","Sport City Valencia","Round of 64 & 32 (08:00–15:00)","https://www.gaygamesvalencia2026.com/en/sport/padel/"],
+ [5,"9999","Draw","Table Tennis","Sport","Lluis Puig Velodrome","Singles & doubles (40+) draw","https://www.gaygamesvalencia2026.com/en/sport/table-tennis/"],
+ [5,"1800","18:00","Out Loud: Pride Talks","Cultural","The Meeting Point","Rethinking Accessibility in Sport","https://www.gaygamesvalencia2026.com/en/culture/out-loud/"],
+ [5,"1830","18:30","Memorial Moment","Ceremony","MuVIM","Memorial ceremony (museum open from 16:00)","https://www.gaygamesvalencia2026.com/en/culture/valencia-memorial-moment/"],
+ [5,"1900","19:00","Pride in Motion · Queer Film Festival","Cultural","Nave 3 Ribes, Parque Central","Screening (7–8pm)","https://www.gaygamesvalencia2026.com/en/culture/pride-in-motion-queer-film-festival/"],
+ [5,"9999","Rehearsal","Gay Games Valencia Band Festival","Cultural","Palau de la Música","Rehearsal + pop-up concert","https://www.gaygamesvalencia2026.com/en/culture/gay-games-valencia-band-festival/"],
+ [5,"2300","23:00","Gay Games Ball","Party","The Muse Valencia","Ballroom night (11pm–4am)","https://www.gaygamesvalencia2026.com/en/event/gay-games-ball/"],
+ // THU 2 JUL
+ [6,"0730","07:30","Aquatics: Swimming","Sport","Parque del Oeste Swimming Pool","Competition (7:30, 11:00 & 18:30)","https://www.gaygamesvalencia2026.com/en/sport/swimming/"],
+ [6,"0830","08:30","Aquatics: Artistic Swimming","Sport","Sports Center Natzaret","Competition 9:30–13:30 (venue opens 8:30)","https://www.gaygamesvalencia2026.com/en/sport/artistic-swimming/"],
+ [6,"0830","08:30","Aquatics: Waterpolo","Sport","Nou Moles / Natzaret","Semifinals","https://www.gaygamesvalencia2026.com/en/sport/waterpolo/"],
+ [6,"0900","09:00","Athletics: Track and Field","Sport","Turia Stadium","Track & field (9–16)","https://www.gaygamesvalencia2026.com/en/sport/track-field/"],
+ [6,"0900","09:00","Beach Volleyball","Sport","El Cabanyal Beach","Knockouts up to semifinals (9–15)","https://www.gaygamesvalencia2026.com/en/sport/beach-volleyball/"],
+ [6,"0900","09:00","Bowling","Sport","Ilusiona Heron City","Team event + medals","https://www.gaygamesvalencia2026.com/en/sport/bowling/"],
+ [6,"0900","09:00","Field Hockey","Sport","La Carrasca / Naranjos","Matches (9–20)","https://www.gaygamesvalencia2026.com/en/sport/field-hockey/"],
+ [6,"0900","09:00","Petanque","Sport","Cruyff court Carlos Soler park","Daily play 9–14","https://www.gaygamesvalencia2026.com/en/sport/petanque/"],
+ [6,"0900","09:00","Squash","Sport","Sports Center Cabanyal","Daily play 9–18","https://www.gaygamesvalencia2026.com/en/sport/squash/"],
+ [6,"1100","11:00","Sailing","Sport","La Marina de Valencia","Qualifying Series","https://www.gaygamesvalencia2026.com/en/sport/sailing/"],
+ [6,"1600","16:00","Figure Skating (on ice)","Sport","Fun on Ice Bonaire","Competition (16–22)","https://www.gaygamesvalencia2026.com/en/sport/figure-skating/"],
+ [6,"2000","20:00","Athletics: 5K","Sport","Assut de l'Or Bridge","Race start (8:00pm)","https://www.gaygamesvalencia2026.com/en/sport/5k/"],
+ [6,"1000","10:00","Badminton","Sport","la Petxina / Fontsanta","Single-elimination up to semifinals (from ~10:00)","https://www.gaygamesvalencia2026.com/en/sport/badminton/"],
+ [6,"9999","Blitz","Chess","Sport","Sports Center la Petxina","Blitz Chess — playing window listed 5:30am–8:30pm on page","https://www.gaygamesvalencia2026.com/en/sport/chess/"],
+ [6,"9999","Day 3","Dance Sport","Sport","Sports Center Fuente de San Luis","Competition Day 3","https://www.gaygamesvalencia2026.com/en/sport/dance-sport/"],
+ [6,"0930","09:30","Dragonboat","Sport","La Marina de Valencia","Finals from 09:30","https://www.gaygamesvalencia2026.com/en/sport/dragonboat/"],
+ [6,"9999","Qualifying","Golf","Sport","Golf Course El Saler","Qualifying round","https://www.gaygamesvalencia2026.com/en/sport/golf/"],
+ [6,"9999","Seminars","Martial Arts","Sport","Lluis Puig Velodrome","Free martial-arts seminars","https://www.gaygamesvalencia2026.com/en/sport/martial-arts/"],
+ [6,"9999","Matches","Football (7 & 11)","Sport","Multiple fields","Match day","https://www.gaygamesvalencia2026.com/en/sport/football/"],
+ [6,"0800","08:00","Padel","Sport","Sport City Valencia","Round of 16 & Quarterfinals (08:00–15:00)","https://www.gaygamesvalencia2026.com/en/sport/padel/"],
+ [6,"9999","Groups","Table Tennis","Sport","Lluis Puig Velodrome","Mixed doubles groups","https://www.gaygamesvalencia2026.com/en/sport/table-tennis/"],
+ [6,"1800","18:00","Out Loud: Pride Talks","Cultural","The Meeting Point","Fútbol Trans es Fútbol","https://www.gaygamesvalencia2026.com/en/culture/out-loud/"],
+ [6,"1900","19:00","Pride in Motion · Queer Film Festival","Cultural","Nave 3 Ribes, Parque Central","Screening (7–8pm)","https://www.gaygamesvalencia2026.com/en/culture/pride-in-motion-queer-film-festival/"],
+ [6,"9999","Concert","Gay Games Valencia Band Festival","Cultural","Palau de la Música","Concert at Palau de la Música","https://www.gaygamesvalencia2026.com/en/culture/gay-games-valencia-band-festival/"],
+ // FRI 3 JUL
+ [7,"0730","07:30","Aquatics: Swimming","Sport","Parque del Oeste Swimming Pool","Competition (1500m Freestyle)","https://www.gaygamesvalencia2026.com/en/sport/swimming/"],
+ [7,"0830","08:30","Aquatics: Diving","Sport","La Hípica Swimming Pool","Competition 8:30–14:30","https://www.gaygamesvalencia2026.com/en/sport/diving/"],
+ [7,"0830","08:30","Aquatics: Waterpolo","Sport","Nou Moles / Natzaret","Final (8:30–14:30)","https://www.gaygamesvalencia2026.com/en/sport/waterpolo/"],
+ [7,"0900","09:00","Athletics: Track and Field","Sport","Turia Stadium","Track & field finals (9–12:30)","https://www.gaygamesvalencia2026.com/en/sport/track-field/"],
+ [7,"0900","09:00","Beach Volleyball","Sport","El Cabanyal Beach","Semifinals & finals (9–15)","https://www.gaygamesvalencia2026.com/en/sport/beach-volleyball/"],
+ [7,"0900","09:00","Field Hockey","Sport","La Carrasca","Matches (9–20); BBQ night 18:30","https://www.gaygamesvalencia2026.com/en/sport/field-hockey/"],
+ [7,"0900","09:00","Petanque","Sport","Cruyff court Carlos Soler park","Daily play 9–14","https://www.gaygamesvalencia2026.com/en/sport/petanque/"],
+ [7,"0900","09:00","Squash","Sport","Sports Center Cabanyal","Daily play 9–18","https://www.gaygamesvalencia2026.com/en/sport/squash/"],
+ [7,"9999","Reserve","Sailing","Sport","La Marina de Valencia","Reserve day (weather)","https://www.gaygamesvalencia2026.com/en/sport/sailing/"],
+ [7,"1000","10:00","Badminton","Sport","la Petxina / Fontsanta","Semifinals & finals (from ~10:00)","https://www.gaygamesvalencia2026.com/en/sport/badminton/"],
+ [7,"9999","Division round","Golf","Sport","Golf Course El Saler","Division competition round + medals","https://www.gaygamesvalencia2026.com/en/sport/golf/"],
+ [7,"9999","Matches","Football (7 & 11)","Sport","Multiple fields","Match day","https://www.gaygamesvalencia2026.com/en/sport/football/"],
+ [7,"0800","08:00","Padel","Sport","Sport City Valencia","Semifinals & Final (08:00–15:00)","https://www.gaygamesvalencia2026.com/en/sport/padel/"],
+ [7,"9999","Draw","Table Tennis","Sport","Lluis Puig Velodrome","Mixed doubles draw","https://www.gaygamesvalencia2026.com/en/sport/table-tennis/"],
+ [7,"1800","18:00","Figure Skating Gala","Sport","Fun on Ice Bonaire","Gala (slot 16–22; gala at 18:00)","https://www.gaygamesvalencia2026.com/en/sport/figure-skating/"],
+ [7,"1900","19:00","Dance Sport Gala","Sport","Sports Center Fuente de San Luis","Day 4 + Gala 'From Feather to Leather'","https://www.gaygamesvalencia2026.com/en/sport/dance-sport/"],
+ [7,"1800","18:00","Out Loud: Pride Talks","Cultural","The Meeting Point","Intersex voices in Sport","https://www.gaygamesvalencia2026.com/en/culture/out-loud/"],
+ [7,"1900","19:00","Pride in Motion · Queer Film Festival","Cultural","Nave 3 Ribes, Parque Central","Screening (7–8pm)","https://www.gaygamesvalencia2026.com/en/culture/pride-in-motion-queer-film-festival/"],
+ [7,"9999","Pop-up","Gay Games Valencia Band Festival","Cultural","Around the city","Pop-up pep-band concert","https://www.gaygamesvalencia2026.com/en/culture/gay-games-valencia-band-festival/"],
+ [7,"1800","18:00","Pink Flamingo","Party","Parque del Oeste Swimming Pool","Party / aquatic show (after IGLA+ AGM)","https://www.gaygamesvalencia2026.com/en/culture/pink-flamingo/"],
+ // SAT 4 JUL
+ [8,"0900","09:00","Field Hockey","Sport","La Carrasca / Naranjos","Final matches (9–15:30)","https://www.gaygamesvalencia2026.com/en/sport/field-hockey/"],
+ [8,"0930","09:30","Aquatics: Open Water Swimming","Sport","Las Arenas Beach","Chip/cap collection 08:30–10:00; 5K starts 09:30–09:45 (by category); 2.5K starts 10:30–10:50","https://www.gaygamesvalencia2026.com/en/sport/open-water-swimming/"],
+ [8,"1100","11:00","Pride in Motion · Queer Film Festival","Cultural","Nave 3 Ribes, Parque Central","Closing screening (11am–2pm)","https://www.gaygamesvalencia2026.com/en/culture/pride-in-motion-queer-film-festival/"],
+ [8,"9999","Performance","Cheerleading","Cultural","Pavelló La Font de Sant Lluís","Closing Ceremonies performance","https://www.gaygamesvalencia2026.com/en/culture/cheerleading-event/"],
+ [8,"1830","18:30","Closing Ceremony & Farewell Party","Ceremony","Pavelló La Font de Sant Lluís","Doors 17:30; ceremony begins 18:30","https://www.gaygamesvalencia2026.com/en/closing-ceremony/"],
+ // ONGOING
+ [9,"9999","24h","LGBTQIA+ & Sports Mural","Cultural","Old Turia riverbed (Pont de Fusta)","Public mural, viewable throughout the Games","https://www.gaygamesvalencia2026.com/en/culture/lgbtqia-sports-mural/"],
+ [9,"9999","26 Jun–4 Jul","The Memorial Quilt Exhibition","Cultural","Sports Center la Petxina","AIDS Memorial Quilt — on display daily throughout the Games","https://www.gaygamesvalencia2026.com/en/culture/the-memorial-quilt-exhibition/"],
+ [9,"9999","19 Jun–30 Aug","Valencia Queer · Artistic Identities","Cultural","Valencia City Museum","Art exhibition, 10:00–19:00 (Mondays closed)","https://www.gaygamesvalencia2026.com/en/culture/valencia-queer-contemporary-artistic-identities/"],
+ // RECOVERED FROM SCHEDULE GRID — day confirmed via shaded cell; daily start times not yet published
+ [8,"0630","06:30","Athletics: Half Marathon & Marathon","Sport","Turia Stadium","Marathon departs 6:30am (cut-off 6h); Half Marathon departs 7:30am (cut-off 3h)","https://www.gaygamesvalencia2026.com/en/sport/half-marathon-and-marathon/"],
+ [2,"9999","time TBC","Basketball","Sport","Sports Center UV / UPV","Competition day (start time not yet published)","https://www.gaygamesvalencia2026.com/en/sport/basketball/"],
+ [3,"9999","time TBC","Basketball","Sport","Sports Center UV / UPV","Competition day (start time not yet published)","https://www.gaygamesvalencia2026.com/en/sport/basketball/"],
+ [4,"9999","time TBC","Basketball","Sport","Sports Center UV / UPV","Competition day (start time not yet published)","https://www.gaygamesvalencia2026.com/en/sport/basketball/"],
+ [5,"9999","time TBC","Basketball","Sport","Sports Center UV / UPV","Competition day (start time not yet published)","https://www.gaygamesvalencia2026.com/en/sport/basketball/"],
+ [6,"9999","time TBC","Basketball","Sport","Sports Center UV / UPV","Competition day (start time not yet published)","https://www.gaygamesvalencia2026.com/en/sport/basketball/"],
+ [7,"9999","time TBC","Basketball","Sport","Sports Center UV / UPV","Competition day (start time not yet published)","https://www.gaygamesvalencia2026.com/en/sport/basketball/"],
+ [2,"9999","time TBC","Volleyball","Sport","Benicalap / Cabanyal / Malvarrosa / Nou Moles","Competition day (start time not yet published)","https://www.gaygamesvalencia2026.com/en/sport/volleyball/"],
+ [3,"9999","time TBC","Volleyball","Sport","Benicalap / Cabanyal / Malvarrosa / Nou Moles","Competition day (start time not yet published)","https://www.gaygamesvalencia2026.com/en/sport/volleyball/"],
+ [4,"9999","time TBC","Volleyball","Sport","Benicalap / Cabanyal / Malvarrosa / Nou Moles","Competition day (start time not yet published)","https://www.gaygamesvalencia2026.com/en/sport/volleyball/"],
+ [5,"9999","time TBC","Volleyball","Sport","Benicalap / Cabanyal / Malvarrosa / Nou Moles","Competition day (start time not yet published)","https://www.gaygamesvalencia2026.com/en/sport/volleyball/"],
+ [6,"9999","time TBC","Volleyball","Sport","Benicalap / Cabanyal / Malvarrosa / Nou Moles","Competition day (start time not yet published)","https://www.gaygamesvalencia2026.com/en/sport/volleyball/"],
+ [7,"9999","time TBC","Volleyball","Sport","Benicalap / Cabanyal / Malvarrosa / Nou Moles","Competition day (start time not yet published)","https://www.gaygamesvalencia2026.com/en/sport/volleyball/"],
+ [3,"9999","time TBC","Softball","Sport","Baseball Fields","Competition day (start time not yet published)","https://www.gaygamesvalencia2026.com/en/sport/softball/"],
+ [4,"9999","time TBC","Softball","Sport","Baseball Fields","Competition day (start time not yet published)","https://www.gaygamesvalencia2026.com/en/sport/softball/"],
+ [5,"9999","time TBC","Softball","Sport","Baseball Fields","Competition day (start time not yet published)","https://www.gaygamesvalencia2026.com/en/sport/softball/"],
+ [6,"9999","time TBC","Softball","Sport","Baseball Fields","Competition day (start time not yet published)","https://www.gaygamesvalencia2026.com/en/sport/softball/"],
+ [7,"9999","time TBC","Softball","Sport","Baseball Fields","Competition day (start time not yet published)","https://www.gaygamesvalencia2026.com/en/sport/softball/"],
+ [2,"0900","09:00","Powerlifting","Sport","Sports Center Creu del Grau","Competition 09:00–16:30 (Closed/Novice & Open categories); weigh-in 5–8pm day before","https://www.gaygamesvalencia2026.com/en/sport/powerlifting/"],
+ [3,"0900","09:00","Powerlifting","Sport","Sports Center Creu del Grau","Competition 09:00–16:30 (Closed/Novice & Open categories); weigh-in 5–8pm day before","https://www.gaygamesvalencia2026.com/en/sport/powerlifting/"],
+ [4,"0900","09:00","Powerlifting","Sport","Sports Center Creu del Grau","Competition 09:00–16:30 (Closed/Novice & Open categories); weigh-in 5–8pm day before","https://www.gaygamesvalencia2026.com/en/sport/powerlifting/"],
+ [4,"9999","time TBC","Dodgeball","Sport","Sports Center Natzaret","Round-robin / playoffs (start time not yet published)","https://www.gaygamesvalencia2026.com/en/sport/dodgeball/"],
+ [5,"9999","time TBC","Dodgeball","Sport","Sports Center Natzaret","Round-robin / playoffs (start time not yet published)","https://www.gaygamesvalencia2026.com/en/sport/dodgeball/"],
+ [6,"9999","time TBC","Dodgeball","Sport","Sports Center Natzaret","Round-robin / playoffs (start time not yet published)","https://www.gaygamesvalencia2026.com/en/sport/dodgeball/"],
+ [4,"9999","time TBC","Fencing","Sport","Sports Center Benimaclet","Competition day (start time not yet published)","https://www.gaygamesvalencia2026.com/en/sport/fencing/"],
+ [5,"9999","time TBC","Fencing","Sport","Sports Center Benimaclet","Competition day (start time not yet published)","https://www.gaygamesvalencia2026.com/en/sport/fencing/"],
+ [5,"9999","time TBC","Rugby","Sport","Sports Center Quatre Carreres","Competition day (start time not yet published)","https://www.gaygamesvalencia2026.com/en/sport/rugby/"],
+ [6,"9999","time TBC","Rugby","Sport","Sports Center Quatre Carreres","Competition day (start time not yet published)","https://www.gaygamesvalencia2026.com/en/sport/rugby/"],
+ [7,"9999","time TBC","Rugby","Sport","Sports Center Quatre Carreres","Competition day (start time not yet published)","https://www.gaygamesvalencia2026.com/en/sport/rugby/"],
+ [7,"9999","time TBC","E-sports","Sport","OWN Valencia","Competition day (start time not yet published)","https://www.gaygamesvalencia2026.com/en/sport/e-sport/"],
+ [4,"9999","Matches","Football (7 & 11)","Sport","Multiple fields","Match day","https://www.gaygamesvalencia2026.com/en/sport/football/"],
+ [5,"9999","Matches","Football (7 & 11)","Sport","Multiple fields","Match day","https://www.gaygamesvalencia2026.com/en/sport/football/"],
+ // TBC — no day marked on the schedule grid yet
+ [10,"9999","TBC","Tennis","Sport","Valencia tennis clubs","No day marked on the schedule grid yet","https://www.gaygamesvalencia2026.com/en/sport/tennis/"],
+ [5,"0830","08:30","Cross Training","Sport","KTB Crossfit Vara de Quart","Day 1, 08:30–15:00: WOD1 Indiv Int 08:30 / Pairs Int 10:00 / Pair Scaled 11:00; WOD2 Indiv Int 12:00 / Pairs Int 13:15 / Pair Scaled 14:00","https://www.gaygamesvalencia2026.com/en/sport/cross-training/"],
+ [6,"0830","08:30","Cross Training","Sport","KTB Crossfit Vara de Quart","Day 2, 08:30–15:00: WOD3 Indiv Int 08:30 / Pairs Int 10:00 / Pair Scaled 10:45; WOD4 Indiv Int 11:45 / Pairs Int 12:45 / Pair Scaled 13:30; Medal Ceremony 14:30","https://www.gaygamesvalencia2026.com/en/sport/cross-training/"],
+ [10,"9999","TBA","Rowing","Sport","TBA","Page is a stub; details not yet published","https://www.gaygamesvalencia2026.com/en/sport/rowing/"],
+ [10,"9999","TBA","Quadball","Sport","TBA","Page is a stub; details not yet published","https://www.gaygamesvalencia2026.com/en/sport/quadball/"],
+ [10,"9999","Workshop","Pilota Valenciana","Sport","Trinquet","Non-competitive workshop (date TBC)","https://www.gaygamesvalencia2026.com/en/sport/pilota-valenciana/"],
+ [10,"9999","Workshop","Colpbol","Sport","Sports Center Natzaret","Non-competitive learn-and-play (date TBC)","https://www.gaygamesvalencia2026.com/en/sport/colpbol/"],
+ [4,"9999","time TBC","Choral Festival","Cultural","Palau de les Arts","Choir festival (start time not yet published)","https://www.gaygamesvalencia2026.com/en/culture/choral-festival/"],
+ [3,"2100","21:00","Queer Fashion Show","Cultural","The Meeting Point","Fashion show (9pm)","https://www.gaygamesvalencia2026.com/en/culture/queer-fashion-show/"],
+ [2,"2000","20:00","Sport Mini Ball","Cultural","The Meeting Point","Ballroom/vogue mini-ball (8pm)","https://www.gaygamesvalencia2026.com/en/culture/sport-mini-ball/"]
+];
+
+const out=document.getElementById('out');
+const qEl=document.getElementById('q');
+const countEl=document.getElementById('count');
+let activeCats=new Set(["Sport","Cultural","Ceremony","Party"]);
+let view="day";
+
+document.getElementById('cats').addEventListener('click',e=>{
+  const c=e.target.closest('.chip'); if(!c) return;
+  const cat=c.dataset.cat;
+  if(activeCats.has(cat)){activeCats.delete(cat);c.classList.remove('on');}
+  else{activeCats.add(cat);c.classList.add('on');}
+  render();
+});
+document.getElementById('view').addEventListener('click',e=>{
+  const b=e.target.closest('button'); if(!b) return;
+  view=b.dataset.v;
+  [...e.currentTarget.children].forEach(x=>x.classList.toggle('on',x===b));
+  render();
+});
+qEl.addEventListener('input',render);
+
+function esc(s){return s.replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));}
+function badge(c){return `<span class="badge b-${c}">${c}</span>`;}
+
+function filtered(){
+  const q=qEl.value.trim().toLowerCase();
+  return R.filter(r=>{
+    if(!activeCats.has(r[4])) return false;
+    if(q){ return (r[3]+' '+r[5]+' '+r[6]).toLowerCase().includes(q); }
+    return true;
+  });
+}
+
+function renderDay(rows){
+  let html='', n=0;
+  for(let d=0; d<DAYS.length; d++){
+    const items=rows.filter(r=>r[0]===d).sort((a,b)=>a[1].localeCompare(b[1]));
+    if(!items.length) continue;
+    n+=items.length;
+    html+=`<div class="day"><h2><span class="dow">${DAYS[d][1]}</span> ${esc(DAYS[d][0].replace(DAYS[d][1]+' ',''))} <span class="n">${items.length}</span></h2>`;
+    for(const r of items){
+      const t = r[1]==="9999" ? `<span style="color:var(--muted)">${esc(r[2])}</span>` : esc(r[2]);
+      html+=`<div class="card"><div class="time">${t}</div><div class="body">
+        <div class="name"><a href="${r[7]}" target="_blank" rel="noopener">${esc(r[3])}</a>${badge(r[4])}</div>
+        <div class="meta"><span class="venue">📍 ${esc(r[5])}</span> · ${esc(r[6])}</div>
+      </div></div>`;
+    }
+    html+='</div>';
+  }
+  countEl.textContent=`${n} session${n!==1?'s':''}`;
+  out.innerHTML = html || `<div class="empty">No matches — try clearing the search or re-enabling a type.</div>`;
+}
+
+function renderSport(rows){
+  const map=new Map();
+  for(const r of rows){
+    if(!map.has(r[3])) map.set(r[3],{cat:r[4],venue:r[5],url:r[7],occ:[]});
+    map.get(r[3]).occ.push(r);
+  }
+  const names=[...map.keys()].sort((a,b)=>a.localeCompare(b));
+  let html='';
+  for(const name of names){
+    const m=map.get(name);
+    m.occ.sort((a,b)=> a[0]-b[0] || a[1].localeCompare(b[1]));
+    let lis='';
+    for(const r of m.occ){
+      const day = DAYS[r[0]][1] ? `${DAYS[r[0]][1]} ${DAYS[r[0]][0].replace(DAYS[r[0]][1]+' ','')}` : DAYS[r[0]][0];
+      const tm = r[1]==="9999" ? r[2] : r[2];
+      lis+=`<li><span class="d">${esc(day)}</span><span>${esc(tm)} — ${esc(r[6])}</span></li>`;
+    }
+    html+=`<div class="card sportcard" style="grid-template-columns:1fr"><div class="body">
+      <div class="name"><a href="${m.url}" target="_blank" rel="noopener">${esc(name)}</a>${badge(m.cat)}</div>
+      <ul>${lis}</ul></div></div>`;
+  }
+  countEl.textContent=`${names.length} activit${names.length!==1?'ies':'y'}`;
+  out.innerHTML = html || `<div class="empty">No matches — try clearing the search or re-enabling a type.</div>`;
+}
+
+function render(){ const rows=filtered(); view==="day"?renderDay(rows):renderSport(rows); }
+render();
+</script>
+</body>
+</html>
